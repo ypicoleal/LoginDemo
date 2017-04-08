@@ -3,17 +3,24 @@ package com.github.ypicoleal.logindemo;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,21 +60,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rootLayout = (ViewGroup) findViewById(R.id.main_container);
+
         EditText email = (EditText) findViewById(R.id.email);
         EditText password = (EditText) findViewById(R.id.password);
 
-        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    animateOnFocus(v);
-                } else {
-                    animateOnFocusLost(v);
-                }
-            }
-        });
+        EditText emailS = (EditText) findViewById(R.id.email_singup);
+        EditText passwordS = (EditText) findViewById(R.id.password_singup);
+        EditText passwordC = (EditText) findViewById(R.id.password_confirm);
 
-        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+        View.OnFocusChangeListener focuslistene = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -76,7 +79,13 @@ public class MainActivity extends AppCompatActivity {
                     animateOnFocusLost(v);
                 }
             }
-        });
+        };
+
+        email.setOnFocusChangeListener(focuslistene);
+        password.setOnFocusChangeListener(focuslistene);
+        emailS.setOnFocusChangeListener(focuslistene);
+        passwordS.setOnFocusChangeListener(focuslistene);
+        passwordC.setOnFocusChangeListener(focuslistene);
     }
 
     @Override
@@ -87,17 +96,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showSingUp(View view) {
-        rootLayout = (ViewGroup) findViewById(R.id.main_container);
         final View animationCircle = findViewById(R.id.animation_circle);
         final View animationFirstArist = findViewById(R.id.animation_first_arist);
         final View animationSecondArist = findViewById(R.id.animation_second_arist);
         final View animationSquare = findViewById(R.id.animation_square);
+        final TextView animationTV = (TextView) findViewById(R.id.animation_tv);
+        final ImageView twitterImageView = (ImageView) findViewById(R.id.twitter_img);
+        final ImageView instagramImageView = (ImageView) findViewById(R.id.instagram_img);
+        final ImageView facebokImageView = (ImageView) findViewById(R.id.facebook_img);
+        final View singupFormContainer = findViewById(R.id.signup_form_container);
+        final View loginFormContainer = findViewById(R.id.login_form_container);
 
-        //view.setVisibility(View.INVISIBLE);
+        findViewById(R.id.singup_container).setVisibility(View.INVISIBLE);
         animationCircle.setVisibility(View.VISIBLE);
         animationFirstArist.setVisibility(View.VISIBLE);
         animationSecondArist.setVisibility(View.VISIBLE);
         animationSquare.setVisibility(View.VISIBLE);
+        animationTV.setVisibility(View.VISIBLE);
+        singupFormContainer.setVisibility(View.VISIBLE);
 
         final float scale = getResources().getDisplayMetrics().density;
 
@@ -116,6 +132,29 @@ public class MainActivity extends AppCompatActivity {
 
         final int square_target_width = rootLayout.getWidth();
         final int square_target_height = (int) (80 * scale + 0.5f);
+
+        final float tv_curr_x = findViewById(R.id.singup_tv).getX() + findViewById(R.id.singup_button).getX();
+        final float tv_curr_y = findViewById(R.id.singup_tv).getY() + findViewById(R.id.buttons_container).getY() + findViewById(R.id.singup_container).getY();
+
+        final float tv_target_x = findViewById(R.id.singup_big_tv).getX();
+        final float tv_target_y = findViewById(R.id.singup_big_tv).getY();
+
+        final float tv_curr_size = 16;
+        final float tv_target_size = 56;
+
+        final int tv_curr_color = Color.parseColor("#ffffff");
+        final int tv_target_color = Color.parseColor("#5cffffff");
+
+        twitterImageView.setImageResource(R.drawable.ic_twitter_pink);
+        instagramImageView.setImageResource(R.drawable.ic_instagram_pink);
+        facebokImageView.setImageResource(R.drawable.ic_facebook_pink);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccentDark));
+        }
+
 
         Animation a = new Animation() {
             @Override
@@ -152,6 +191,26 @@ public class MainActivity extends AppCompatActivity {
 
                 animationSquare.getLayoutParams().width = (int) (square_target_width * interpolatedTime);
                 animationSquare.requestLayout();
+
+                float diff_x = tv_curr_x - tv_target_x;
+                float x = tv_target_x + (diff_x - (diff_x * interpolatedTime));
+                float diff_y = tv_curr_y - tv_target_y;
+                float y = tv_target_y + (diff_y - (diff_y * interpolatedTime));
+
+                animationTV.setX(x);
+                animationTV.setY(y);
+                animationTV.requestLayout();
+
+                if (interpolatedTime >= 0.2f && interpolatedTime < 0.3f) {
+                    twitterImageView.setImageResource(R.drawable.ic_twitter_blue);
+                } else if (interpolatedTime >= 0.45f && interpolatedTime < 0.55f) {
+                    instagramImageView.setImageResource(R.drawable.ic_instagram_blue);
+                } else if (interpolatedTime >= 0.65f && interpolatedTime < 0.75f) {
+                    facebokImageView.setImageResource(R.drawable.ic_facebook_blue);
+                }
+
+                singupFormContainer.setAlpha(interpolatedTime);
+                loginFormContainer.setAlpha(1 - interpolatedTime);
             }
 
             @Override
@@ -159,6 +218,36 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
+
+        a.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        animationCircle.setVisibility(View.GONE);
+                        animationFirstArist.setVisibility(View.GONE);
+                        animationSecondArist.setVisibility(View.GONE);
+                        animationTV.setVisibility(View.GONE);
+                        animationSquare.setVisibility(View.GONE);
+                        findViewById(R.id.singup_big_tv).setVisibility(View.VISIBLE);
+                    }
+                }, 100);
+                rootLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                ((View) animationSquare.getParent()).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                findViewById(R.id.login_form_container).setVisibility(View.GONE);
+                findViewById(R.id.login_tv).setVisibility(View.GONE);
+                showLoginButton();
+            }
+        });
 
         Animation a2 = new Animation() {
             @Override
@@ -173,13 +262,96 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        a.setDuration(200);
-        a2.setDuration(86);
+        ValueAnimator a3 = ValueAnimator.ofFloat(tv_curr_size, tv_target_size);
+        a3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                animationTV.setTextSize(animatedValue);
+            }
+        });
 
+        ValueAnimator a4 = ValueAnimator.ofInt(tv_curr_color, tv_target_color);
+        a4.setEvaluator(new ArgbEvaluator());
+        a4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int animatedValue = (int) animation.getAnimatedValue();
+                animationTV.setTextColor(animatedValue);
+            }
+        });
+
+        a.setDuration(400);
+        a2.setDuration(172);
+        a3.setDuration(400);
+        a4.setDuration(400);
+
+        a4.start();
+        a3.start();
         animationSquare.startAnimation(a2);
         animationCircle.startAnimation(a);
         animationFirstArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_first_arist));
         animationSecondArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_second_arist));
+        singupFormContainer.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_form));
+    }
+
+    private void showLoginButton() {
+        final CardView singupButton = (CardView) findViewById(R.id.singup_button);
+        final View loginButton = findViewById(R.id.login_button);
+
+        loginButton.setVisibility(View.VISIBLE);
+        loginButton.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final float scale = getResources().getDisplayMetrics().density;
+        final int curr_singup_margin = (int) (-35 * scale + 0.5f);
+        final int target_singup_margin = -singupButton.getWidth();
+
+        final int curr_login_margin = -loginButton.getMeasuredWidth();
+        final int target_login_margin = (int) (-35 * scale + 0.5f);
+
+        EasingManager manager = new EasingManager(new EasingManager.EasingCallback() {
+
+            @Override
+            public void onEasingValueChanged(double value, double oldValue) {
+                int diff_margin = curr_singup_margin - target_singup_margin;
+                int margin = target_singup_margin + (int) (diff_margin - (diff_margin * value));
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, margin, 0);
+                singupButton.requestLayout();
+
+                diff_margin = curr_login_margin - target_login_margin;
+                margin = target_login_margin + (int) (diff_margin - (diff_margin * value));
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.leftMargin = margin;
+                loginButton.requestLayout();
+            }
+
+            @Override
+            public void onEasingStarted(double value) {
+                int diff_margin = curr_singup_margin - target_singup_margin;
+                int margin = target_singup_margin + (int) (diff_margin - (diff_margin * value));
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, margin, 0);
+                singupButton.requestLayout();
+
+                diff_margin = curr_login_margin - target_login_margin;
+                margin = target_login_margin + (int) (diff_margin - (diff_margin * value));
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.setMargins(margin, 0, 0, 0);
+                loginButton.requestLayout();
+            }
+
+            @Override
+            public void onEasingFinished(double value) {
+                singupButton.setVisibility(View.GONE);
+            }
+        });
+
+        manager.start(Back.class, EasingManager.EaseType.EaseOut, 0, 1, 600);
     }
 
     private void animateOnFocus(View v) {
@@ -194,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         final int second_target_radius = (int) (8 * scale + 0.5f);
 
         final int first_curr_color = Color.parseColor("#00ffffff");
-        final int first_target_color = Color.parseColor("#fba4dd");
+        final int first_target_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
 
         final int second_curr_color = Color.parseColor("#5cffffff");
         final int second_target_color = Color.parseColor("#ffffff");
@@ -262,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
         final int second_curr_radius = (int) (8 * scale + 0.5f);
         final int second_target_radius = (int) (20 * scale + 0.5f);
 
-        final int first_curr_color = Color.parseColor("#fba4dd");
+        final int first_curr_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
         final int first_target_color = Color.parseColor("#00ffffff");
 
         final int second_curr_color = Color.parseColor("#ffffff");
