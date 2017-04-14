@@ -124,9 +124,9 @@
         style="@style/TextAppearance.AppCompat.Display3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_form_container"
+        android:layout_below="@+id/login_form_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="41dp"
         android:text="LOG IN"
         android:textColor="#5cffffff"
         android:textStyle="bold" />
@@ -147,17 +147,12 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/colorAccent">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
+        android:background="@color/colorAccent"
+        android:gravity="end">
 
         <View
             android:id="@+id/animation_square"
-            android:layout_width="0dp"
+            android:layout_width="00dp"
             android:layout_height="80dp"
             android:layout_marginBottom="0dp"
             android:layout_marginEnd="0dp"

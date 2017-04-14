@@ -10,10 +10,9 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -30,30 +29,6 @@ import it.sephiroth.android.library.easing.EasingManager;
 
 public class MainActivity extends AppCompatActivity {
     private ViewGroup rootLayout;
-    private boolean keyboardListenersAttached = false;
-    private boolean isKEyboardShown = false;
-    private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            int heightDiff = rootLayout.getRootView().getHeight() - rootLayout.getHeight();
-            double contentViewTop = rootLayout.getRootView().getHeight() * 0.20;
-
-            Log.i("Keyboard", "diff " + heightDiff + " " + (rootLayout.getRootView().getHeight() * 0.20));
-
-            if (heightDiff < contentViewTop) {
-                if (isKEyboardShown) {
-                    isKEyboardShown = false;
-                    onHideKeyboard();
-                }
-            } else {
-                if (!isKEyboardShown) {
-                    isKEyboardShown = true;
-                    onShowKeyboard();
-
-                }
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +61,6 @@ public class MainActivity extends AppCompatActivity {
         emailS.setOnFocusChangeListener(focuslistene);
         passwordS.setOnFocusChangeListener(focuslistene);
         passwordC.setOnFocusChangeListener(focuslistene);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //attachKeyboardListeners();
-
     }
 
     public void showSingUp(View view) {
@@ -296,29 +264,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLogIn(View view) {
-        final View animationCircle = findViewById(R.id.animation_circle);
+        final CardView animationCircle = (CardView) findViewById(R.id.animation_circle);
         final View animationFirstArist = findViewById(R.id.animation_first_arist);
         final View animationSecondArist = findViewById(R.id.animation_second_arist);
         final View animationSquare = findViewById(R.id.animation_square);
+        final LinearLayout squareParent = (LinearLayout) animationSquare.getParent();
         final TextView animationTV = (TextView) findViewById(R.id.animation_tv);
         final ImageView twitterImageView = (ImageView) findViewById(R.id.twitter_img);
         final ImageView instagramImageView = (ImageView) findViewById(R.id.instagram_img);
         final ImageView facebokImageView = (ImageView) findViewById(R.id.facebook_img);
         final View singupFormContainer = findViewById(R.id.signup_form_container);
         final View loginFormContainer = findViewById(R.id.login_form_container);
+        final TextView loginTV = (TextView) findViewById(R.id.login_tv);
 
+
+        animationFirstArist.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        animationSecondArist.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        animationCircle.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        animationSquare.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         animationFirstArist.setVisibility(View.VISIBLE);
         findViewById(R.id.login_container).setVisibility(View.INVISIBLE);
-        animationCircle.setVisibility(View.VISIBLE);
         animationSecondArist.setVisibility(View.VISIBLE);
-        /*animationSquare.setVisibility(View.VISIBLE);
+        animationCircle.setVisibility(View.VISIBLE);
+        animationSquare.setVisibility(View.VISIBLE);
         animationTV.setVisibility(View.VISIBLE);
-        singupFormContainer.setVisibility(View.VISIBLE);*/
+        loginFormContainer.setVisibility(View.VISIBLE);
+        loginTV.setVisibility(View.INVISIBLE);
 
         animationFirstArist.bringToFront();
-        animationCircle.bringToFront();
+        squareParent.bringToFront();
         animationSecondArist.bringToFront();
+        animationCircle.bringToFront();
+        findViewById(R.id.buttons_container).bringToFront();
+        loginFormContainer.bringToFront();
+        loginTV.bringToFront();
+        animationTV.bringToFront();
 
         final float scale = getResources().getDisplayMetrics().density;
 
@@ -340,11 +321,11 @@ public class MainActivity extends AppCompatActivity {
         final int square_target_width = rootLayout.getWidth();
         final int square_target_height = (int) (80 * scale + 0.5f);
 
-        final float tv_curr_x = findViewById(R.id.singup_tv).getX() + findViewById(R.id.singup_button).getX();
-        final float tv_curr_y = findViewById(R.id.singup_tv).getY() + findViewById(R.id.buttons_container).getY() + findViewById(R.id.singup_container).getY();
+        final float tv_curr_x = findViewById(R.id.login_small_tv).getX() + findViewById(R.id.login_button).getX();
+        final float tv_curr_y = findViewById(R.id.login_small_tv).getY() + findViewById(R.id.buttons_container).getY() + findViewById(R.id.login_container).getY();
 
-        final float tv_target_x = findViewById(R.id.singup_big_tv).getX();
-        final float tv_target_y = findViewById(R.id.singup_big_tv).getY();
+        final float tv_target_x = findViewById(R.id.login_tv).getX();
+        final float tv_target_y = findViewById(R.id.login_tv).getY();
 
         final float tv_curr_size = 16;
         final float tv_target_size = 56;
@@ -356,8 +337,11 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccentDark));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
+
+        squareParent.setGravity(Gravity.START);
+        animationTV.setText("LOG IN");
 
         Animation a = new Animation() {
             @Override
@@ -405,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 animationSecondArist.setPivotY(animationSecondArist.getHeight());
                 animationSecondArist.setRotation(0 - (90 * interpolatedTime));
 
-                /*animationSquare.getLayoutParams().width = (int) (square_target_width * interpolatedTime);
+                animationSquare.getLayoutParams().width = (int) (square_target_width * interpolatedTime);
                 animationSquare.requestLayout();
 
                 float diff_x = tv_curr_x - tv_target_x;
@@ -418,15 +402,15 @@ public class MainActivity extends AppCompatActivity {
                 animationTV.requestLayout();
 
                 if (interpolatedTime >= 0.2f && interpolatedTime < 0.3f) {
-                    twitterImageView.setImageResource(R.drawable.ic_twitter_blue);
+                    facebokImageView.setImageResource(R.drawable.ic_facebook_pink);
                 } else if (interpolatedTime >= 0.45f && interpolatedTime < 0.55f) {
-                    instagramImageView.setImageResource(R.drawable.ic_instagram_blue);
+                    instagramImageView.setImageResource(R.drawable.ic_instagram_pink);
                 } else if (interpolatedTime >= 0.65f && interpolatedTime < 0.75f) {
-                    facebokImageView.setImageResource(R.drawable.ic_facebook_blue);
+                    twitterImageView.setImageResource(R.drawable.ic_twitter_pink);
                 }
 
-                singupFormContainer.setAlpha(interpolatedTime);
-                loginFormContainer.setAlpha(1 - interpolatedTime);*/
+                loginFormContainer.setAlpha(interpolatedTime);
+                singupFormContainer.setAlpha(1 - interpolatedTime);
             }
 
             @Override
@@ -435,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        /*a.setAnimationListener(new Animation.AnimationListener() {
+        a.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation arg0) {
             }
@@ -454,14 +438,15 @@ public class MainActivity extends AppCompatActivity {
                         animationSecondArist.setVisibility(View.GONE);
                         animationTV.setVisibility(View.GONE);
                         animationSquare.setVisibility(View.GONE);
-                        findViewById(R.id.singup_big_tv).setVisibility(View.VISIBLE);
+                        findViewById(R.id.login_tv).setVisibility(View.VISIBLE);
+                        findViewById(R.id.login_tv).bringToFront();
                     }
                 }, 100);
-                rootLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                ((View) animationSquare.getParent()).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                findViewById(R.id.login_form_container).setVisibility(View.GONE);
-                findViewById(R.id.login_tv).setVisibility(View.GONE);
-                showLoginButton();
+                rootLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                ((View) animationSquare.getParent()).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                findViewById(R.id.signup_form_container).setVisibility(View.GONE);
+                findViewById(R.id.singup_big_tv).setVisibility(View.GONE);
+                showSingupButton();
             }
         });
 
@@ -495,20 +480,18 @@ public class MainActivity extends AppCompatActivity {
                 int animatedValue = (int) animation.getAnimatedValue();
                 animationTV.setTextColor(animatedValue);
             }
-        });*/
+        });
 
         a.setDuration(4000);
-        /*a2.setDuration(1720);
+        a2.setDuration(1720);
         a3.setDuration(4000);
         a4.setDuration(4000);
 
         a4.start();
-        a3.start();*/
-        //animationSquare.startAnimation(a2);
+        a3.start();
+        animationSquare.startAnimation(a2);
         animationCircle.startAnimation(a);
-        //animationFirstArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_first_reverse));
-        //animationSecondArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_second_arist));
-        //singupFormContainer.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_form));*/
+        loginFormContainer.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_form_reverse));
     }
 
     private void showLoginButton() {
@@ -563,7 +546,85 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onEasingFinished(double value) {
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, target_singup_margin, 0);
+                singupButton.requestLayout();
+
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.setMargins(target_login_margin, 0, 0, 0);
+                loginButton.requestLayout();
+
                 singupButton.setVisibility(View.GONE);
+            }
+        });
+
+        manager.start(Back.class, EasingManager.EaseType.EaseOut, 0, 1, 600);
+    }
+
+    private void showSingupButton() {
+        final CardView singupButton = (CardView) findViewById(R.id.singup_button);
+        final View loginButton = findViewById(R.id.login_button);
+
+        singupButton.setVisibility(View.VISIBLE);
+        singupButton.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final float scale = getResources().getDisplayMetrics().density;
+        final int curr_singup_margin = -singupButton.getWidth();
+        final int target_singup_margin = (int) (-35 * scale + 0.5f);
+
+        final int curr_login_margin = (int) (-35 * scale + 0.5f);
+        final int target_login_margin = -loginButton.getMeasuredWidth();
+
+        findViewById(R.id.singup_container).setVisibility(View.VISIBLE);
+
+        EasingManager manager = new EasingManager(new EasingManager.EasingCallback() {
+
+            @Override
+            public void onEasingValueChanged(double value, double oldValue) {
+                int diff_margin = curr_singup_margin - target_singup_margin;
+                int margin = target_singup_margin + (int) (diff_margin - (diff_margin * value));
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, margin, 0);
+                singupButton.requestLayout();
+
+                diff_margin = curr_login_margin - target_login_margin;
+                margin = target_login_margin + (int) (diff_margin - (diff_margin * value));
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.leftMargin = margin;
+                loginButton.requestLayout();
+            }
+
+            @Override
+            public void onEasingStarted(double value) {
+                int diff_margin = curr_singup_margin - target_singup_margin;
+                int margin = target_singup_margin + (int) (diff_margin - (diff_margin * value));
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, margin, 0);
+                singupButton.requestLayout();
+
+                diff_margin = curr_login_margin - target_login_margin;
+                margin = target_login_margin + (int) (diff_margin - (diff_margin * value));
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.setMargins(margin, 0, 0, 0);
+                loginButton.requestLayout();
+            }
+
+            @Override
+            public void onEasingFinished(double value) {
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) singupButton.getLayoutParams();
+                layoutParams.setMargins(0, 0, target_singup_margin, 0);
+                singupButton.requestLayout();
+
+
+                layoutParams = (LinearLayout.LayoutParams) loginButton.getLayoutParams();
+                layoutParams.setMargins(target_login_margin, 0, 0, 0);
+                loginButton.requestLayout();
+                loginButton.setVisibility(View.GONE);
             }
         });
 
@@ -707,114 +768,5 @@ public class MainActivity extends AppCompatActivity {
         second_anim.start();
         first_container.startAnimation(a);
 
-    }
-
-    protected void attachKeyboardListeners() {
-        if (keyboardListenersAttached) {
-            return;
-        }
-
-        rootLayout = (ViewGroup) findViewById(R.id.main_container);
-        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
-
-        keyboardListenersAttached = true;
-    }
-
-    private void onShowKeyboard() {
-        Log.i("KEy", "Keyborad shown");
-        final CardView logoCard = (CardView) findViewById(R.id.logo_card);
-        final TextView logoTV = (TextView) findViewById(R.id.logo_tv);
-        final TextView forgotTV = (TextView) findViewById(R.id.forgot_pass_tv);
-        final TextView loginTV = (TextView) findViewById(R.id.login_tv);
-        final LinearLayout buttonsContainer = (LinearLayout) findViewById(R.id.buttons_container);
-        final LinearLayout signupContainer = (LinearLayout) findViewById(R.id.singup_container);
-
-        final float scale = getResources().getDisplayMetrics().density;
-        final int curr_height = (int) (52 * scale + 0.5f);
-        final int targetHeight = (int) (32 * scale + 0.5f);
-
-        final int curr_margin_forgot = (int) (50 * scale + 0.5f);
-        final int target_margin_forgot = (int) (20 * scale + 0.5f);
-
-        final int curr_margin_buttons = (int) (40 * scale + 0.5f);
-        final int target_margin_buttons = (int) (-35 * scale + 0.5f);
-
-        final int curr_text_size = 32;
-        final int target_text_size = 12;
-
-        final int curr_color = Color.parseColor("#5cffffff");
-        final int target_color = Color.parseColor("#ffffffff");
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                int diff_size = curr_text_size - target_text_size;
-                logoTV.setTextSize(target_text_size + (diff_size - (diff_size * interpolatedTime)));
-
-                diff_size = curr_height - targetHeight;
-                int size = targetHeight + (int) (diff_size - (diff_size * interpolatedTime));
-                logoCard.getLayoutParams().height = size;
-                logoCard.getLayoutParams().width = size;
-                logoCard.setRadius(size / 2);
-                logoCard.requestLayout();
-
-                int diff_margin = curr_margin_forgot - target_margin_forgot;
-                int margin = target_margin_forgot + (int) (diff_margin - (diff_margin * interpolatedTime));
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) forgotTV.getLayoutParams();
-                params.setMargins(0, margin, 0, 0);
-                forgotTV.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-        a.setDuration(200);
-        logoCard.startAnimation(a);
-
-        EasingManager manager = new EasingManager(new EasingManager.EasingCallback() {
-
-            @Override
-            public void onEasingValueChanged(double value, double oldValue) {
-                int diff_margin = curr_margin_buttons - target_margin_buttons;
-                int margin = target_margin_buttons + (int) (diff_margin - (diff_margin * value));
-                LinearLayout.LayoutParams params_buttons = (LinearLayout.LayoutParams) buttonsContainer.getLayoutParams();
-                params_buttons.setMargins(0, 0, 0, margin);
-                buttonsContainer.requestLayout();
-            }
-
-            @Override
-            public void onEasingStarted(double value) {
-                int diff_margin = curr_margin_buttons - target_margin_buttons;
-                int margin = target_margin_buttons + (int) (diff_margin - (diff_margin * value));
-                LinearLayout.LayoutParams params_buttons = (LinearLayout.LayoutParams) buttonsContainer.getLayoutParams();
-                params_buttons.setMargins(0, 0, 0, margin);
-                buttonsContainer.requestLayout();
-            }
-
-            @Override
-            public void onEasingFinished(double value) {
-            }
-        });
-
-        manager.start(Back.class, EasingManager.EaseType.EaseOut, 0, 1, 5000);
-
-
-        ValueAnimator anim = new ValueAnimator();
-        anim.setIntValues(curr_color, target_color);
-        anim.setEvaluator(new ArgbEvaluator());
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                loginTV.setTextColor((Integer) animation.getAnimatedValue());
-            }
-        });
-        anim.setDuration(200);
-        anim.start();
-    }
-
-    private void onHideKeyboard() {
-        Log.i("KEy", "Keyborad hide");
     }
 }
