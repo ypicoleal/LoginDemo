@@ -78,28 +78,6 @@ public class MainActivity extends AppCompatActivity {
         final int backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary);
         final TextView singupTV = (TextView) findViewById(R.id.singup_big_tv);
 
-        findViewById(R.id.singup_container).setVisibility(View.INVISIBLE);
-        animationCircle.setVisibility(View.VISIBLE);
-        animationFirstArist.setVisibility(View.VISIBLE);
-        animationSecondArist.setVisibility(View.VISIBLE);
-        animationSquare.setVisibility(View.VISIBLE);
-        animationTV.setVisibility(View.VISIBLE);
-        singupFormContainer.setVisibility(View.VISIBLE);
-
-        animationFirstArist.bringToFront();
-        squareParent.bringToFront();
-        animationSecondArist.bringToFront();
-        animationCircle.bringToFront();
-        findViewById(R.id.buttons_container).bringToFront();
-        singupFormContainer.bringToFront();
-        singupTV.bringToFront();
-        animationTV.bringToFront();
-
-        animationFirstArist.setBackgroundColor(backgroundColor);
-        animationSecondArist.setBackgroundColor(backgroundColor);
-        animationCircle.setCardBackgroundColor(backgroundColor);
-        animationSquare.setBackgroundColor(backgroundColor);
-
         final float scale = getResources().getDisplayMetrics().density;
 
         final int circle_curr_margin = (int) (82 * scale + 0.5f);
@@ -214,6 +192,27 @@ public class MainActivity extends AppCompatActivity {
         a.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation arg0) {
+                findViewById(R.id.singup_container).setVisibility(View.INVISIBLE);
+                animationCircle.setVisibility(View.VISIBLE);
+                animationFirstArist.setVisibility(View.VISIBLE);
+                animationSecondArist.setVisibility(View.VISIBLE);
+                animationSquare.setVisibility(View.VISIBLE);
+                animationTV.setVisibility(View.VISIBLE);
+                singupFormContainer.setVisibility(View.VISIBLE);
+
+                animationFirstArist.bringToFront();
+                squareParent.bringToFront();
+                animationSecondArist.bringToFront();
+                animationCircle.bringToFront();
+                findViewById(R.id.buttons_container).bringToFront();
+                singupFormContainer.bringToFront();
+                singupTV.bringToFront();
+                animationTV.bringToFront();
+
+                animationFirstArist.setBackgroundColor(backgroundColor);
+                animationSecondArist.setBackgroundColor(backgroundColor);
+                animationCircle.setCardBackgroundColor(backgroundColor);
+                animationSquare.setBackgroundColor(backgroundColor);
             }
 
             @Override
@@ -302,28 +301,6 @@ public class MainActivity extends AppCompatActivity {
         final TextView loginTV = (TextView) findViewById(R.id.login_tv);
         final int backgrounColor = ContextCompat.getColor(this, R.color.colorAccent);
 
-        animationFirstArist.setBackgroundColor(backgrounColor);
-        animationSecondArist.setBackgroundColor(backgrounColor);
-        animationCircle.setCardBackgroundColor(backgrounColor);
-        animationSquare.setBackgroundColor(backgrounColor);
-
-        animationFirstArist.setVisibility(View.VISIBLE);
-        findViewById(R.id.login_container).setVisibility(View.INVISIBLE);
-        animationSecondArist.setVisibility(View.VISIBLE);
-        animationCircle.setVisibility(View.VISIBLE);
-        animationSquare.setVisibility(View.VISIBLE);
-        animationTV.setVisibility(View.VISIBLE);
-        loginFormContainer.setVisibility(View.VISIBLE);
-        loginTV.setVisibility(View.INVISIBLE);
-
-        animationFirstArist.bringToFront();
-        squareParent.bringToFront();
-        animationSecondArist.bringToFront();
-        animationCircle.bringToFront();
-        findViewById(R.id.buttons_container).bringToFront();
-        loginFormContainer.bringToFront();
-        loginTV.bringToFront();
-        animationTV.bringToFront();
 
         final float scale = getResources().getDisplayMetrics().density;
 
@@ -331,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         final int circle_target_margin = 0;
 
         final int first_curr_width = (int) (108 * scale + 0.5f);
-        final int first_target_width = (int) (rootLayout.getHeight() * 2);
+        final int first_target_width = (rootLayout.getHeight() * 2);
 
         final int first_curr_height = (int) (70 * scale + 0.5f);
         final int first_target_height = rootLayout.getWidth();
@@ -442,6 +419,28 @@ public class MainActivity extends AppCompatActivity {
         a.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation arg0) {
+                animationFirstArist.setBackgroundColor(backgrounColor);
+                animationSecondArist.setBackgroundColor(backgrounColor);
+                animationCircle.setCardBackgroundColor(backgrounColor);
+                animationSquare.setBackgroundColor(backgrounColor);
+
+                animationFirstArist.setVisibility(View.VISIBLE);
+                findViewById(R.id.login_container).setVisibility(View.INVISIBLE);
+                animationSecondArist.setVisibility(View.VISIBLE);
+                animationCircle.setVisibility(View.VISIBLE);
+                animationSquare.setVisibility(View.VISIBLE);
+                animationTV.setVisibility(View.VISIBLE);
+                loginFormContainer.setVisibility(View.VISIBLE);
+                loginTV.setVisibility(View.INVISIBLE);
+
+                animationFirstArist.bringToFront();
+                squareParent.bringToFront();
+                animationSecondArist.bringToFront();
+                animationCircle.bringToFront();
+                findViewById(R.id.buttons_container).bringToFront();
+                loginFormContainer.bringToFront();
+                loginTV.bringToFront();
+                animationTV.bringToFront();
             }
 
             @Override
