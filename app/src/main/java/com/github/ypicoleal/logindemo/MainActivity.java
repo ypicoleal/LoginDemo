@@ -64,16 +64,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showSingUp(View view) {
-        final View animationCircle = findViewById(R.id.animation_circle);
+        final CardView animationCircle = (CardView) findViewById(R.id.animation_circle);
         final View animationFirstArist = findViewById(R.id.animation_first_arist);
         final View animationSecondArist = findViewById(R.id.animation_second_arist);
         final View animationSquare = findViewById(R.id.animation_square);
+        final LinearLayout squareParent = (LinearLayout) animationSquare.getParent();
         final TextView animationTV = (TextView) findViewById(R.id.animation_tv);
         final ImageView twitterImageView = (ImageView) findViewById(R.id.twitter_img);
         final ImageView instagramImageView = (ImageView) findViewById(R.id.instagram_img);
         final ImageView facebokImageView = (ImageView) findViewById(R.id.facebook_img);
         final View singupFormContainer = findViewById(R.id.signup_form_container);
         final View loginFormContainer = findViewById(R.id.login_form_container);
+        final int backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary);
+        final TextView singupTV = (TextView) findViewById(R.id.singup_big_tv);
 
         findViewById(R.id.singup_container).setVisibility(View.INVISIBLE);
         animationCircle.setVisibility(View.VISIBLE);
@@ -82,6 +85,20 @@ public class MainActivity extends AppCompatActivity {
         animationSquare.setVisibility(View.VISIBLE);
         animationTV.setVisibility(View.VISIBLE);
         singupFormContainer.setVisibility(View.VISIBLE);
+
+        animationFirstArist.bringToFront();
+        squareParent.bringToFront();
+        animationSecondArist.bringToFront();
+        animationCircle.bringToFront();
+        findViewById(R.id.buttons_container).bringToFront();
+        singupFormContainer.bringToFront();
+        singupTV.bringToFront();
+        animationTV.bringToFront();
+
+        animationFirstArist.setBackgroundColor(backgroundColor);
+        animationSecondArist.setBackgroundColor(backgroundColor);
+        animationCircle.setCardBackgroundColor(backgroundColor);
+        animationSquare.setBackgroundColor(backgroundColor);
 
         final float scale = getResources().getDisplayMetrics().density;
 
@@ -113,16 +130,14 @@ public class MainActivity extends AppCompatActivity {
         final int tv_curr_color = Color.parseColor("#ffffff");
         final int tv_target_color = Color.parseColor("#5cffffff");
 
-        twitterImageView.setImageResource(R.drawable.ic_twitter_pink);
-        instagramImageView.setImageResource(R.drawable.ic_instagram_pink);
-        facebokImageView.setImageResource(R.drawable.ic_facebook_pink);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccentDark));
         }
 
+        squareParent.setGravity(Gravity.END);
+        animationTV.setText("SIGN UP");
 
         Animation a = new Animation() {
             @Override
@@ -151,11 +166,20 @@ public class MainActivity extends AppCompatActivity {
                 params_first.height = height;
                 animationFirstArist.requestLayout();
 
+                animationFirstArist.setPivotX(0);
+                animationFirstArist.setPivotY(0);
+                animationFirstArist.setRotation(-90 * interpolatedTime);
+
+
                 margin = first_curr_margin + (int) (first_target_margin * interpolatedTime);
                 RelativeLayout.LayoutParams params_second = (RelativeLayout.LayoutParams) animationSecondArist.getLayoutParams();
                 params_second.setMargins(0, 0, margin_r, margin);
                 params_second.width = width;
                 animationSecondArist.requestLayout();
+
+                animationSecondArist.setPivotX(0);
+                animationSecondArist.setPivotY(animationSecondArist.getHeight());
+                animationSecondArist.setRotation(90 * interpolatedTime);
 
                 animationSquare.getLayoutParams().width = (int) (square_target_width * interpolatedTime);
                 animationSquare.requestLayout();
@@ -249,17 +273,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        a.setDuration(4000);
-        a2.setDuration(1720);
-        a3.setDuration(4000);
-        a4.setDuration(4000);
+        a.setDuration(400);
+        a2.setDuration(172);
+        a3.setDuration(400);
+        a4.setDuration(400);
 
         a4.start();
         a3.start();
         animationSquare.startAnimation(a2);
         animationCircle.startAnimation(a);
-        animationFirstArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_first_arist));
-        animationSecondArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_second_arist));
+        // animationFirstArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_first_arist));
+        //animationSecondArist.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_second_arist));
         singupFormContainer.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_form));
     }
 
@@ -276,12 +300,12 @@ public class MainActivity extends AppCompatActivity {
         final View singupFormContainer = findViewById(R.id.signup_form_container);
         final View loginFormContainer = findViewById(R.id.login_form_container);
         final TextView loginTV = (TextView) findViewById(R.id.login_tv);
+        final int backgrounColor = ContextCompat.getColor(this, R.color.colorAccent);
 
-
-        animationFirstArist.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-        animationSecondArist.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-        animationCircle.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-        animationSquare.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        animationFirstArist.setBackgroundColor(backgrounColor);
+        animationSecondArist.setBackgroundColor(backgrounColor);
+        animationCircle.setCardBackgroundColor(backgrounColor);
+        animationSquare.setBackgroundColor(backgrounColor);
 
         animationFirstArist.setVisibility(View.VISIBLE);
         findViewById(R.id.login_container).setVisibility(View.INVISIBLE);
@@ -375,10 +399,6 @@ public class MainActivity extends AppCompatActivity {
                 animationFirstArist.setPivotY(0);
                 animationFirstArist.setRotation(90 * interpolatedTime);
 
-                animationSecondArist.setPivotX(animationFirstArist.getWidth());
-                animationFirstArist.setPivotY(0);
-                animationFirstArist.setRotation(90 * interpolatedTime);
-
                 margin = first_curr_margin + (int) (first_target_margin * interpolatedTime);
                 RelativeLayout.LayoutParams params_second = (RelativeLayout.LayoutParams) animationSecondArist.getLayoutParams();
                 params_second.setMargins(0, 0, margin_r, margin);
@@ -387,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
 
                 animationSecondArist.setPivotX(animationSecondArist.getWidth());
                 animationSecondArist.setPivotY(animationSecondArist.getHeight());
-                animationSecondArist.setRotation(0 - (90 * interpolatedTime));
+                animationSecondArist.setRotation(-(90 * interpolatedTime));
 
                 animationSquare.getLayoutParams().width = (int) (square_target_width * interpolatedTime);
                 animationSquare.requestLayout();
@@ -482,10 +502,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        a.setDuration(4000);
-        a2.setDuration(1720);
-        a3.setDuration(4000);
-        a4.setDuration(4000);
+        a.setDuration(400);
+        a2.setDuration(172);
+        a3.setDuration(400);
+        a4.setDuration(400);
 
         a4.start();
         a3.start();
@@ -500,6 +520,7 @@ public class MainActivity extends AppCompatActivity {
 
         loginButton.setVisibility(View.VISIBLE);
         loginButton.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        findViewById(R.id.login_container).setVisibility(View.VISIBLE);
 
         final float scale = getResources().getDisplayMetrics().density;
         final int curr_singup_margin = (int) (-35 * scale + 0.5f);
@@ -568,6 +589,7 @@ public class MainActivity extends AppCompatActivity {
 
         singupButton.setVisibility(View.VISIBLE);
         singupButton.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        findViewById(R.id.singup_container).setVisibility(View.VISIBLE);
 
         final float scale = getResources().getDisplayMetrics().density;
         final int curr_singup_margin = -singupButton.getWidth();
@@ -575,8 +597,6 @@ public class MainActivity extends AppCompatActivity {
 
         final int curr_login_margin = (int) (-35 * scale + 0.5f);
         final int target_login_margin = -loginButton.getMeasuredWidth();
-
-        findViewById(R.id.singup_container).setVisibility(View.VISIBLE);
 
         EasingManager manager = new EasingManager(new EasingManager.EasingCallback() {
 
