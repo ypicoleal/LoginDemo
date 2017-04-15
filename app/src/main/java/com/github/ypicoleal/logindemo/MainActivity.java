@@ -653,13 +653,12 @@ public class MainActivity extends AppCompatActivity {
     private void animateOnFocus(View v) {
         final CardView first_container = (CardView) v.getParent();
         final CardView second_container = (CardView) first_container.getParent();
-        final float scale = getResources().getDisplayMetrics().density;
 
-        final int first_curr_radius = (int) (18 * scale + 0.5f);
-        final int first_target_radius = (int) (6 * scale + 0.5f);
+        final int first_curr_radius = (int) getResources().getDimension(R.dimen.first_card_radius);
+        final int first_target_radius = (int) getResources().getDimension(R.dimen.first_card_radius_on_focus);
 
-        final int second_curr_radius = (int) (20 * scale + 0.5f);
-        final int second_target_radius = (int) (8 * scale + 0.5f);
+        final int second_curr_radius = (int) getResources().getDimension(R.dimen.second_card_radius);
+        final int second_target_radius = (int) getResources().getDimension(R.dimen.second_card_radius_on_focus);
 
         final int first_curr_color = Color.parseColor("#00ffffff");
         final int first_target_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
@@ -722,13 +721,13 @@ public class MainActivity extends AppCompatActivity {
     private void animateOnFocusLost(View v) {
         final CardView first_container = (CardView) v.getParent();
         final CardView second_container = (CardView) first_container.getParent();
-        final float scale = getResources().getDisplayMetrics().density;
 
-        final int first_curr_radius = (int) (6 * scale + 0.5f);
-        final int first_target_radius = (int) (18 * scale + 0.5f);
+        final int first_curr_radius = (int) getResources().getDimension(R.dimen.first_card_radius_on_focus);
+        final int first_target_radius = (int) getResources().getDimension(R.dimen.first_card_radius);
+        ;
 
-        final int second_curr_radius = (int) (8 * scale + 0.5f);
-        final int second_target_radius = (int) (20 * scale + 0.5f);
+        final int second_curr_radius = (int) getResources().getDimension(R.dimen.second_card_radius_on_focus);
+        final int second_target_radius = (int) getResources().getDimension(R.dimen.second_card_radius);
 
         final int first_curr_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
         final int first_target_color = Color.parseColor("#00ffffff");
