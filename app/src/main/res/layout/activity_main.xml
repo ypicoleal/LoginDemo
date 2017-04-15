@@ -152,7 +152,7 @@
             android:layout_width="@dimen/second_card_width"
             android:layout_height="@dimen/second_card_height"
             android:layout_marginBottom="20dp"
-            app:cardBackgroundColor="#5cffffff"
+            app:cardBackgroundColor="@color/backgroundEditText"
             app:cardCornerRadius="@dimen/second_card_radius"
             app:cardElevation="0dp">
 
@@ -160,7 +160,7 @@
                 android:layout_width="@dimen/first_card_width"
                 android:layout_height="@dimen/first_card_height"
                 android:layout_gravity="center"
-                app:cardBackgroundColor="#00ffffff"
+                app:cardBackgroundColor="@android:color/transparent"
                 app:cardCornerRadius="@dimen/first_card_radius"
                 app:cardElevation="0dp">
 

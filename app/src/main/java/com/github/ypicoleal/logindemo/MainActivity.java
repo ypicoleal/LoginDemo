@@ -660,11 +660,11 @@ public class MainActivity extends AppCompatActivity {
         final int second_curr_radius = (int) getResources().getDimension(R.dimen.second_card_radius);
         final int second_target_radius = (int) getResources().getDimension(R.dimen.second_card_radius_on_focus);
 
-        final int first_curr_color = Color.parseColor("#00ffffff");
+        final int first_curr_color = ContextCompat.getColor(this, android.R.color.transparent);
         final int first_target_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
 
-        final int second_curr_color = Color.parseColor("#5cffffff");
-        final int second_target_color = Color.parseColor("#ffffff");
+        final int second_curr_color = ContextCompat.getColor(this, R.color.backgroundEditText);
+        final int second_target_color = ContextCompat.getColor(this, android.R.color.white);
 
         ValueAnimator first_anim = new ValueAnimator();
         first_anim.setIntValues(first_curr_color, first_target_color);
@@ -730,10 +730,11 @@ public class MainActivity extends AppCompatActivity {
         final int second_target_radius = (int) getResources().getDimension(R.dimen.second_card_radius);
 
         final int first_curr_color = ((ColorDrawable) rootLayout.getBackground()).getColor();
-        final int first_target_color = Color.parseColor("#00ffffff");
+        final int first_target_color = ContextCompat.getColor(this, android.R.color.transparent);
 
-        final int second_curr_color = Color.parseColor("#ffffff");
-        final int second_target_color = Color.parseColor("#5cffffff");
+        final int second_curr_color = ContextCompat.getColor(this, android.R.color.white);
+        ;
+        final int second_target_color = ContextCompat.getColor(this, R.color.backgroundEditText);
 
         ValueAnimator first_anim = new ValueAnimator();
         first_anim.setIntValues(first_curr_color, first_target_color);
