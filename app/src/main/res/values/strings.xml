@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Login Demo</string>
     <string name="action_settings">Settings</string>
+    <string name="logo_text">L</string>
+    <string name="email_placeholder">Email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="forgot_password_link">Forgot Password?</string>
+    <string name="confirm_password_placeholder">Confirm Password</string>
+    <string name="log_in">LOG IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="or">OR</string>
+    <string name="fb_icon">Facebook icon</string>
+    <string name="instagram_icon">Instagram Icon</string>
 </resources>
