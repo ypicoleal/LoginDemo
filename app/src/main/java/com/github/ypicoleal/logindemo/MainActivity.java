@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         squareParent.setGravity(Gravity.END);
-        animationTV.setText("SIGN UP");
+        animationTV.setText(R.string.sign_up);
 
         Animation a = new Animation() {
             @Override
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         squareParent.setGravity(Gravity.START);
-        animationTV.setText("LOG IN");
+        animationTV.setText(R.string.log_in);
 
         Animation a = new Animation() {
             @Override
@@ -724,7 +724,6 @@ public class MainActivity extends AppCompatActivity {
 
         final int first_curr_radius = (int) getResources().getDimension(R.dimen.first_card_radius_on_focus);
         final int first_target_radius = (int) getResources().getDimension(R.dimen.first_card_radius);
-        ;
 
         final int second_curr_radius = (int) getResources().getDimension(R.dimen.second_card_radius_on_focus);
         final int second_target_radius = (int) getResources().getDimension(R.dimen.second_card_radius);
@@ -733,7 +732,6 @@ public class MainActivity extends AppCompatActivity {
         final int first_target_color = ContextCompat.getColor(this, android.R.color.transparent);
 
         final int second_curr_color = ContextCompat.getColor(this, android.R.color.white);
-        ;
         final int second_target_color = ContextCompat.getColor(this, R.color.backgroundEditText);
 
         ValueAnimator first_anim = new ValueAnimator();
